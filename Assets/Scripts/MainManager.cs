@@ -23,7 +23,15 @@ public class MainManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        HighScoreText.text = $"Best Score: {Manager.Instance._name}: {Manager.Instance._highscore}";
+        Manager.Instance.LoadData();
+        if (Manager.Instance._highscoreName != null)
+        {
+            HighScoreText.text = $"Best Score: {Manager.Instance._highscoreName}: {Manager.Instance._highscore}";
+        }
+        else
+        {
+            HighScoreText.text = $"Best Score: {Manager.Instance._name}: {Manager.Instance._highscore}";
+        }
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
         
@@ -71,7 +79,10 @@ public class MainManager : MonoBehaviour
         if (m_Points > Manager.Instance._highscore)
         {
             Manager.Instance._highscore = m_Points;
+            Manager.Instance._highscoreName = Manager.Instance._name;
             HighScoreText.text = $"Best Score: {Manager.Instance._name}: {Manager.Instance._highscore}";
+
+            Manager.Instance.SaveBest();
         }
     }
 
